@@ -64,7 +64,13 @@ const todoListSlice = createSlice({
       })
       .addCase(addNewTodo.fulfilled, (state, action) => {
         state.todos.push(action.payload);
-      });
+      }).addCase(updateTodo.fulfilled, (state, action) => {
+        state.todos.map((todo)=>{
+          if (todo.id === action.payload.id) {
+            todo.completed = !todo.completed;
+          }
+        })
+      })
   },
 });
 
@@ -78,25 +84,38 @@ export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
 export const addNewTodo = createAsyncThunk(
   "todos/addNewTodos",
   async (newTodo) => {
-    await axios.post(
+    const res = await axios.post(
       "https://63c7e7cce52516043f4701d0.mockapi.io/todos",
       newTodo
     );
+    return res.data;
   }
 );
+
+export const updateTodo = createAsyncThunk(
+  "todos/updateTodo", 
+  async (updatedTodo) =>{
+    const res = await axios.put(`https://63c7e7cce52516043f4701d0.mockapi.io/todos/${updatedTodo.mockAPIID}`, {
+      ...updatedTodo,
+      completed: !updatedTodo.completed,
+    })
+    return res.data;
+  }
+)
+
 
 export default todoListSlice;
 //ACtion {object} and action creators () => {return action}
 //Thunk action {function} va thunk action creators ()=> {return thunk action }
 
-export function addTodos(todo) {
-  //Thunk action
-  return function addTodosThunk(dispatch, getState) {
-    console.log("[addTodoThunk]", getState());
-    console.log({ todo });
-    //Trước khi update lên reducer thì ở đây có thể custom một số thứ
-    todo.name = "Adu dark qua";
-    dispatch(todoListSlice.actions.addTask(todo));
-    console.log("[Add todo Thunk after]", getState());
-  };
-}
+// export function addTodos(todo) {
+//   //Thunk action
+//   return function addTodosThunk(dispatch, getState) {
+//     console.log("[addTodoThunk]", getState());
+//     console.log({ todo });
+//     //Trước khi update lên reducer thì ở đây có thể custom một số thứ
+//     todo.name = "Adu dark qua";
+//     dispatch(todoListSlice.actions.addTask(todo));
+//     console.log("[Add todo Thunk after]", getState());
+//   };
+// }

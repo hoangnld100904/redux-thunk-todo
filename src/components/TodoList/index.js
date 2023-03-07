@@ -55,6 +55,7 @@ export default function TodoList() {
             name={task.name}
             prioriry={task.priority}
             completed={task.completed}
+            task = {task}
           />
         ))}
       </Col>
