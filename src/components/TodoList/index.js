@@ -6,10 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 import { addNewTodo } from "./todoListSlice";
 // import { addTodo } from "../../redux/actions/action";
 import TodoListSlice from "./todoListSlice";
-import { todoRemainingSelector } from "../../redux/selectors/selector";
+import { todosRemainingSelector } from "../../redux/selectors/selector";
 export default function TodoList() {
   const dispatch = useDispatch();
-  const todoList = useSelector(todoRemainingSelector);
+  const todoList = useSelector(todosRemainingSelector);
   // const searchText = useSelector(searchTextSelector);
 
   //Handle add task function
